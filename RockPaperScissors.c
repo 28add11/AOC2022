@@ -2,7 +2,7 @@
 #include <string.h>
 
 int get_input(int data[1000][3]);
-void to_number(int data[1000][3], int data_length);
+int to_number(int data[1000][3], int data_length);
 
 int main(void) {
 
@@ -12,7 +12,7 @@ int main(void) {
 
 	int score = to_number(data, data_len);
 
-	printf("%d", score);
+	printf("%d\n", score);
 
 	return 0;
 
@@ -32,28 +32,30 @@ int get_input(int data[1000][3]) // Returns an int of how many rounds there are,
     }
 
     // Read the input from stdin
-    fgets(input_string, sizeof(input_string), fp);
+    //fgets(input_string, sizeof(input_string), fp);
 
     // Split the input_string into one round, then that into each player's moves
     int rounds_num = 0; // Number of rounds
 
-    char *round = strtok(input_string, "\n");
+    char *round = strtok(fp, "\n");
     while (round != NULL)
     {
         data[rounds_num][0] = round[0];
-		data[rounds_num][1] = round[3];
+		data[rounds_num][1] = round[2];
         rounds_num++;
+		printf("%s\n", round);
 
         round = strtok(NULL, "\n");
     }
+	return rounds_num;
 }
 
-void to_number(int data[1000][3], int data_length) {
+int to_number(int data[1000][3], int data_length) {
 
 	int score = 0;
 
 	for (int i = 0; i < data_length; i++){
-		switch (data[i][2])
+		switch (data[i][1])
 		{
 		case 'X':
 
