@@ -63,36 +63,45 @@ int to_number(int data[3000][3], int data_length) {
 		{
 		case 'X':
 
-			score += 1;
+			score += 0;
 
 			if (data[i][0] == 'A') {
 				score += 3;
 			} 
+			else if (data[i][0] == 'B') {
+				score += 1;
+			}
 			else if (data[i][0] == 'C') {
-				score += 6;
+				score += 2;
 			}
 			break;
 		case 'Y':
 
-			score += 2;
+			score += 3;
 
-			if (data[i][0] == 'B') {
-				score += 3;
+			if (data[i][0] == 'A') {
+				score += 1;
 			} 
-			else if (data[i][0] == 'A') {
-				score += 6;
+			else if (data[i][0] == 'B') {
+				score += 2;
+			}
+			else if (data[i][0] == 'C') {
+				score += 3;
 			}
 			
 			break;
 		case 'Z':
 
-			score += 3;
+			score += 6;
 				
-			if (data[i][0] == 'C') {
-				score += 3;
+			if (data[i][0] == 'A') {
+				score += 2;
 			} 
 			else if (data[i][0] == 'B') {
-				score += 6;
+				score += 3;
+			}
+			else if (data[i][0] == 'C') {
+				score += 1;
 			}
 
 			break;
