@@ -1,13 +1,24 @@
 #include <stdio.h>
 #include <string.h>
 
-int get_input(int data[1000][2]);
+int get_input(int data[1000][3]);
+void to_number(int data[1000][3], int data_length);
 
 int main(void) {
 
+	int data[1000][3];
+
+	int data_len = get_input(data);
+
+	int score = to_number(data, data_len);
+
+	printf("%d", score);
+
+	return 0;
+
 }
 
-int get_input(int data[1000][2]) // Returns an int of how many rounds there are, but mostly changes data to the actual input
+int get_input(int data[1000][3]) // Returns an int of how many rounds there are, but mostly changes data to the actual input
 {
     char input_string[100000]; // Array to store the input string
 
@@ -37,26 +48,52 @@ int get_input(int data[1000][2]) // Returns an int of how many rounds there are,
     }
 }
 
-void to_number(int data[1000][2], int data_length) {
+void to_number(int data[1000][3], int data_length) {
 
 	int score = 0;
 
-	for (int i = 0; i < data_length; i++)
-		for (int x = 0; x < 1; x++)
-			switch (data[i][x])
-			{
-			case 'A': case 'X':
-				data[i][x] = 1;
-				break;
-			case 'B': case 'Y':
-				data[i][x] = 2;
-				break;
-			case 'C': case 'Z':
-				data[i][x] = 3;
-				break;
-	
-			default:
-				data[i][x] = 0;
-				break;
+	for (int i = 0; i < data_length; i++){
+		switch (data[i][2])
+		{
+		case 'X':
+
+			score += 1;
+
+			if (data[i][0] == 'A') {
+				score += 3;
+			} 
+			else if (data[i][0] == 'C') {
+				score += 6;
 			}
+			break;
+		case 'Y':
+
+			score += 2;
+
+			if (data[i][0] == 'B') {
+				score += 3;
+			} 
+			else if (data[i][0] == 'A') {
+				score += 6;
+			}
+			
+			break;
+		case 'Z':
+
+			score += 3;
+				
+			if (data[i][0] == 'C') {
+				score += 3;
+			} 
+			else if (data[i][0] == 'B') {
+				score += 6;
+			}
+
+			break;
+	
+		default:
+			break;
+		}
+	}
+	return score;
 }
