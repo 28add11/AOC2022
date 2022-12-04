@@ -45,7 +45,7 @@ int get_input(int data[3000][3]) // Returns an int of how many rounds there are,
     while (round != NULL)
     {
         data[rounds_num][0] = round[0];
-		data[rounds_num][1] = round[2];
+		data[rounds_num][1] = round[2]; //index of the 2nd collum
         rounds_num++;
 
         round = strtok(NULL, "\n");
@@ -65,7 +65,7 @@ int to_number(int data[3000][3], int data_length) {
 
 			score += 0;
 
-			if (data[i][0] == 'A') {
+			if (data[i][0] == 'A') { //since X means we need to lose, if they play rock you play scissors, etc etc
 				score += 3;
 			} 
 			else if (data[i][0] == 'B') {
