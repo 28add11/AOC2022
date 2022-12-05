@@ -51,48 +51,36 @@ int get_input(char data[5000][1000]) {
 
 void parse_input(char data[5000][1000], int priorities[5000], int rucksacks) {
     int i;
-    int charindex;
+    int length;
     int x;
     int y;
-	char firsthalf[100] = {0};
-	char secondhalf[100] = {0};
     for (i = 0; i <= rucksacks; i++) {
 
-		memset(firsthalf, 0, sizeof(firsthalf));
-		memset(secondhalf, 0, sizeof(secondhalf));
-
-        // Make a copy of the rucksack string
+        // Make a copy of the rucksack strings
         char *rucksack = strdup(data[i]);
+		char *rucksack1 = strdup(data[++i]);
+		char *rucksack2 = strdup(data[++i]);
 
         // Determine the length of the rucksack string
-        charindex = strlen(rucksack);
-
-        // Split the rucksack string in half
-        int middle = (charindex / 2);
-
-        // Find the duplicate letter
-        for (x = 0; x < middle; x++) {
-			firsthalf[x] = rucksack[x];
-		}
-        for (y = middle; y < charindex; y++) {
-			secondhalf[(y - middle)] = rucksack[y];
-		}
+        length = strlen(rucksack);
 
 		// Initialize c to NULL
 		char *c = NULL;
 		
-		for (x = 0; x < middle; x++) {
+		for (x = 0; x < length; x++) {
 			// Find the duplicate character in the second half of the string
-			c = strchr(secondhalf, firsthalf[x]);
-
+			c = strchr(rucksack1, rucksack[x]);
 			// Check if the character was found
 			if (c != NULL) {
-		    	priorities[i] = get_priority(*c);
-				break;
+				if (strchr(rucksack2, *c) != NULL) {
+					priorities[i] = get_priority(*c);
+					
+					break;
+				}
+		    	
 			}
+			
 		}
-		
-            
 		free(rucksack);
 	}
 }
