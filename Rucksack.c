@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int get_input(char data[5000][1000]);
 void parse_input(char data[5000][1000], int priorities[5000], int rucksacks);
@@ -8,18 +9,17 @@ int sum_array(int array[5000], int itemcount);
 
 int main(void) {
 	char data[5000][1000];
-	int priorites[5000];
+	int priorites[5000] = {0};
 
 	int rucksacks = get_input(data);
 	parse_input(data, priorites, rucksacks);
-	printf("%i\n", sum_array(priorites, rucksacks));
+	int result = sum_array(priorites, rucksacks);
+	printf("%i\n", result);
+	return 0;
 }
 
 int get_input(char data[5000][1000]) {
-	
-	char input_string[100000]; // Array to store the input string
-
-      // Open the file for reading
+    // Open the file for reading
     FILE *fp = fopen("input.txt", "r");
 
     // Check if the file was opened successfully
@@ -30,51 +30,70 @@ int get_input(char data[5000][1000]) {
 
     // Read the input from input.txt
     char c;
-  	int i = 0;
-  	while ((c = fgetc(fp)) != EOF) {
-    	input_string[i++] = c;
-  	}
-
-	int rucksack_count = 0; // how many rucksacks there are
-	int item_index; //The item's index in rucksack
-
-	char *rucksack = strtok(input_string, "\n");
-    while (rucksack != NULL)
-    {
-		
-		for (item_index = 0; item_index < sizeof(rucksack); item_index++) { //since rucksack is a char pointer, 
-			data[rucksack_count][item_index] = rucksack[item_index];
-		}
-		data[rucksack_count][item_index] = '\0'; //Set the n+1 item in the rucksack to a null
-        rucksack_count++;
-
-        rucksack = strtok(NULL, "\n");
+    int i = 0;
+    int pos = 0;
+    while ((c = fgetc(fp)) != EOF) {
+        if (c == '\n') {
+            data[i][pos] = '\0';
+            i++;
+            pos = 0;
+        } else {
+            data[i][pos++] = c;
+        }
     }
-	fclose(fp);
-	return rucksack_count;
+
+    // Close the file
+    fclose(fp);
+
+    // Return the number of rucksacks
+    return i;
 }
 
 void parse_input(char data[5000][1000], int priorities[5000], int rucksacks) {
-	int i;
-	int charindex;
-	int x;
-	int y;
-	for (i = 0; i < rucksacks; i++) {
-		charindex = 0;
-		while (data[i][charindex] != '\0') { //find the size of that data element
-			charindex++;
-		}
-		int middle = (--charindex/2); //Split the data element in two (not literally, just finding the middle)
+    int i;
+    int charindex;
+    int x;
+    int y;
+	char firsthalf[100] = {0};
+	char secondhalf[100] = {0};
+    for (i = 0; i <= rucksacks; i++) {
 
-		//Find the duplicate letter
+		memset(firsthalf, 0, sizeof(firsthalf));
+		memset(secondhalf, 0, sizeof(secondhalf));
+
+        // Make a copy of the rucksack string
+        char *rucksack = strdup(data[i]);
+
+        // Determine the length of the rucksack string
+        charindex = strlen(rucksack);
+
+        // Split the rucksack string in half
+        int middle = (charindex / 2);
+
+        // Find the duplicate letter
+        for (x = 0; x < middle; x++) {
+			firsthalf[x] = rucksack[x];
+		}
+        for (y = middle; y < charindex; y++) {
+			secondhalf[(y - middle)] = rucksack[y];
+		}
+
+		// Initialize c to NULL
+		char *c = NULL;
+		
 		for (x = 0; x < middle; x++) {
-			for (y = 0; (y + middle) < charindex; y++){
-				if (data[i][x] == data[i][y])
-				{
-					priorities[i] = get_priority(data[i][x]);
-				}		
+			// Find the duplicate character in the second half of the string
+			c = strchr(secondhalf, firsthalf[x]);
+
+			// Check if the character was found
+			if (c != NULL) {
+		    	priorities[i] = get_priority(*c);
+				break;
 			}
 		}
+		
+            
+		free(rucksack);
 	}
 }
 
@@ -85,8 +104,8 @@ int get_priority(char c) {
 
 int sum_array(int array[5000], int itemcount) {
 	int i;
-	int sum;
-	for (i = 0; i < itemcount; i++) {
+	int sum = 0;
+	for (i = 0; i <= itemcount; i++) {
 		sum += array[i];
 	}
 	return sum;
