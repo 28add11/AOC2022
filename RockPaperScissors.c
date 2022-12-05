@@ -61,11 +61,11 @@ int to_number(int data[3000][3], int data_length) {
 	for (int i = 0; i < data_length; i++){
 		switch (data[i][1])
 		{
-		case 'X':
+		case 'X': //since X means we need to lose, if they play rock you play scissors, etc etc
 
 			score += 0;
 
-			if (data[i][0] == 'A') { //since X means we need to lose, if they play rock you play scissors, etc etc
+			if (data[i][0] == 'A') { 
 				score += 3;
 			} 
 			else if (data[i][0] == 'B') {
@@ -75,7 +75,8 @@ int to_number(int data[3000][3], int data_length) {
 				score += 2;
 			}
 			break;
-		case 'Y':
+
+		case 'Y': //Since Y means we need to tie, if rock is played we need to play rock, etc etc
 
 			score += 3;
 
@@ -90,7 +91,8 @@ int to_number(int data[3000][3], int data_length) {
 			}
 			
 			break;
-		case 'Z':
+
+		case 'Z': //Since Z means we need to win, if rock is played, we play paper
 
 			score += 6;
 				
